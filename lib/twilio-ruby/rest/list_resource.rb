@@ -67,8 +67,10 @@ module Twilio
       # request is made. The HTTP request is made when attempting to access an
       # attribute of the returned instance resource object, such as
       # its #date_created or #voice_url attributes.
-      def get(sid)
-        @instance_class.new "#{@uri}/#{sid}", @client
+      def get(sid, params={})
+        raise "Can't create a resource without a REST Client" unless @client
+        response = @client.get @uri, params unless !params
+        @instance_class.new "#{@uri}/#{sid}", @client, response
       end
       alias :find :get # for the ActiveRecord lovers
 
